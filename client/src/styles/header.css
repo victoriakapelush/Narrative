@@ -1,0 +1,26 @@
+.header {
+    background-color: #e5fc81;
+    position: sticky;
+    padding: 1.5rem 2rem;
+    height: auto;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}
+
+.website-name {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.header-button {
+    border: 1px solid black;
+    padding: .5rem 1rem;
+    width: fit-content;
+}
+
+.header-button:hover {
+    background-color: black;
+    color: #e5fc81;
+}

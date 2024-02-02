@@ -1,0 +1,19 @@
+{
+  "name": "narrative",
+  "version": "1.0.0",
+  "description": "Blog app where users can signup, post articles and leave comments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victoriakapelush/Narrative.git"
+  },
+  "author": "Victoria Kapelush",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victoriakapelush/Narrative/issues"
+  },
+  "homepage": "https://github.com/victoriakapelush/Narrative#readme"
+}
