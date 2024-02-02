@@ -34,7 +34,7 @@ function Home() {
       {posts.length > 0 ? (
         <div className='flex-row post-wrapper'>
           {posts.map((post) => (
-            <a key={post._id} className='flex-row-center post-container'>
+            <Link to={post._id} key={post._id} className='flex-row-center post-container'>
               {post.image && <img src={`http://localhost:3000/`+`${post.image}`} className="image square"></img>}
               <div className='flex-column post-brief-info square'>
                 <h2>{post.title}</h2>
@@ -44,7 +44,7 @@ function Home() {
                   <p className='post-date'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       ) : (

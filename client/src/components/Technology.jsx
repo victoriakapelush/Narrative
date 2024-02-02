@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Header from './Header'
-import '../styles/pages.css'
+import '../styles/home.css'
+import '../styles/post.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -29,7 +30,7 @@ function Technology() {
             {techPosts.length > 0 ? (
         <div className='flex-row post-wrapper'>
           {techPosts.map((post) => (
-            <a key={post._id} className='flex-row-center post-container'>
+            <Link to={post._id} key={post._id} className='flex-row-center post-container'>
               {post.image && <img src={`http://localhost:3000/`+`${post.image}`} className="image square"></img>}
               <div className='flex-column post-brief-info square'>
                 <h2>{post.title}</h2>
@@ -39,13 +40,13 @@ function Technology() {
                   <p className='post-date'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       ) : (
         <p>No posts found</p>
       )}
-        </div>
+      </div>
     )
 }
 

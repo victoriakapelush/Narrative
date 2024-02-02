@@ -1,0 +1,70 @@
+.page-container {
+    margin: 5rem 1rem;
+}
+
+.page-container h1{
+    text-align: center;
+    font-family: 'Nanum Myeongjo',sans-serif;
+}
+
+p {
+    margin: 0 auto;
+    padding: 0 0;
+    text-align: center;
+    width: 50%;
+    height: auto;
+    font-size: 1.3rem;
+    color: #474e59;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+.post-image {
+    width: 70rem;
+    height: auto;
+    margin: 0 10rem 4rem 10rem;
+}
+
+.separate-post-title {
+    margin: 6rem auto 2rem auto;
+    text-align: left;
+    font-size: 4rem;
+    width: 45%;
+    font-weight: 400;
+    border-top: 3px solid black;
+    padding-top: 3rem;
+}
+
+.separate-post-container {
+    width: 100%;
+}
+
+.separate-post-description {
+    text-align: left;
+    width: 45%;
+    font-weight: 500;
+    padding-bottom: 2rem;
+}
+
+.separate-tag-container {
+    width: 45%;
+    margin: 0 23.5rem 3rem 23.5rem;
+    justify-content: start;
+    
+}
+
+.separate-post-tag, .separate-date-tag {
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #e6e6e6;
+    color: #474e59;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin: 0 1rem;
+}
+
+.separate-post-text {
+    margin: 0 auto 5rem auto;
+    text-align: left;
+}

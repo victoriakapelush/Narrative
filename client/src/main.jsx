@@ -4,6 +4,7 @@ import App from './App.jsx'
 import Signup from './components/Signup.jsx'
 import Culture from './components/Culture.jsx'
 import People from './components/People.jsx'
+import Post from './components/Post.jsx'
 import Lifestyle from './components/Lifestyle.jsx'
 import Technology from './components/Technology.jsx'
 import './styles/index.css'
@@ -23,16 +24,36 @@ const router = createBrowserRouter([
     element: <Culture />
   },
   {
+    path: 'culture/:id',
+    element: <Post />
+  },
+  {
     path: '/technology',
     element: <Technology />
+  },
+  {
+    path: 'technology/:id',
+    element: <Post />
   },
   {
     path: '/people',
     element: <People />
   },
   {
+    path: 'people/:id',
+    element: <Post />
+  },
+  {
     path: '/lifestyle',
     element: <Lifestyle />
+  },
+  {
+    path: 'lifestyle/:id',
+    element: <Post />
+  },
+  {
+    path: '/:id',
+    element: <Post />
   }
 ]);
 

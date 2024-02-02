@@ -1,0 +1,15 @@
+.website-link-footer:hover {
+    text-decoration: underline;
+}
+
+.website-link-footer {
+    margin-left: .3rem;
+}
+
+.footer {
+    margin: 0 auto;
+}
+
+.footer-container {
+    margin-top: 3rem;
+}
