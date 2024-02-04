@@ -10,22 +10,18 @@ var cultureRouter = require('./routes/index');
 var techRouter = require('./routes/index');
 var peopleRouter = require('./routes/index');
 var lifestyleRouter = require('./routes/index');
-var postRouter = require('./routes/post');
-const port = process.env.PORT || 3001;
+const signupRouter = require('./routes/index')
 const cors = require("cors");
 const bodyParser = require('body-parser');
-const User = require('./models/user');
-const Post = require('./models/post');
 var app = express();
-
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
-app.use(cors());
 app.use('/', indexRouter);
 app.use('/culture', cultureRouter);
 app.use('/technology', techRouter);
 app.use('/people', peopleRouter);
 app.use('/lifestyle', lifestyleRouter);
-app.use('/post', postRouter);
+app.use('/signup', signupRouter);
 
 // setup mongoose
 const mongoose = require('mongoose');
@@ -50,30 +46,12 @@ app.use(cookieParser());
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors({ origin: true, credentials: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/signup', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    // Create a new user
-    const newUser = new User({ username, password });
-
-    // Save the user to the database
-    await newUser.save();
-    console.log(newUser);
-
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
 app.use(function(req, res, next) {
+  console.log(`Requested URL: ${req.originalUrl}`);
   next(createError(404));
 });
 

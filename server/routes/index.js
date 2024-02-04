@@ -1,15 +1,38 @@
 var express = require('express');
 var router = express.Router();
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); 
 const Post = require('../models/post');
+const User = require('../models/user');
 
 router.get('/', (req, res) => {
   Post.find()
     .then(posts => res.json(posts))
     .catch(err => res.status(404).json({ nopostsfound: 'No posts found' }));
 });
+
+router.get('/signup', (req, res) => {
+  User.find()
+    .then(users => res.json(users))
+    .catch(err => res.status(404).json({ nousersfound: 'No users found' }));
+});
+
+router.post('/signup', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!password || typeof password !== 'string') {
+      return res.status(400).json({ message: "Invalid password format" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, password: hashedPassword });
+    await user.save();
+    res.status(201).json({ message: 'Registration successful' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }});
 
 router.get('/culture', (req, res) => {
   Post.find({ tag: "Culture" })

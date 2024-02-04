@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import '../styles/signup.css'
 import Header from './header'
 import { useState } from 'react';
@@ -12,12 +13,13 @@ function Signup() {
 
     try {
       // Make a POST request to the registration endpoint
-      await axios.post('/api/register', { username, password });
+      await axios.post('http://localhost:3000/signup', { username, password });
 
       // Clear form after successful registration
       setUsername('');
       setPassword('');
       alert('User registered successfully');
+      window.location.href = '/';
     } catch (error) {
       console.error(error);
       alert('Registration failed. Please try again.');

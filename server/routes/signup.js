@@ -1,9 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { signupController, authenticatedUser } = require("../controllers/signupController");
+const bcrypt = require('bcryptjs');
+const User = require('../models/user');
+const signupController = require('../controllers/signupController');
 
-router.get("/", signupController);
-
-router.post("/", authenticatedUser);
+router.get('/signup', signupController)
+router.post('/signup', signupController)
 
 module.exports = router;
