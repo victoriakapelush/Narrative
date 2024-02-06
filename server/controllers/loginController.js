@@ -1,29 +1,25 @@
-const jwt = require('jsonwebtoken');
-const secretKey = 'ghftgdgc666bfwegfjhb';
+const passport = require('passport');
 
-// Login endpoint
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+// Function to get users
+function getUsers(req, res, next) {
+    res.json({ username: req.body.username });
+}
 
-    if (!user) {
-      return res.status(401).json({ error: 'Authentication failed' });
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Authentication failed' });
-    }
-
-    // Create a JWT token
-    const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
-      expiresIn: '1h',
-    });
-
-    res.status(200).json({ token, userId: user._id });
-  } catch (error) {
-    res.status(500).json({ error: 'Authentication failed' });
-  }
+const authenticateLogin = passport.authenticate('local', {
+  successRedirect: '/all',
+  failureRedirect: '/',
 });
+
+const isAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+    // User is authenticated, allow access to the next middleware
+    next();
+  } else {
+    // User is not authenticated, return an error or redirect to login page
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+module.exports = { getUsers, authenticateLogin, isAuthenticated };
+
+  

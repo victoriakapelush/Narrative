@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import Signup from './components/Signup.jsx'
+import All from './components/All.jsx'
 import Culture from './components/Culture.jsx'
 import People from './components/People.jsx'
 import Post from './components/Post.jsx'
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup />,
+  },
+  {
+    path: '/all',
+    element: <All />,
   },
   {
     path: '/culture',

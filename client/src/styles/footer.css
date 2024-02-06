@@ -12,4 +12,7 @@
 
 .footer-container {
     margin-top: 3rem;
+    position: absolute;
+    bottom: 0;
+    width: 95.5%;
 }

@@ -8,7 +8,7 @@ function Header() {
         <Link to="/">Narrative</Link>
       </div>
       <div className='flex-row-center'>
-        <Link to='/' className='header-link'>All</Link>
+        <Link to='/all' className='header-link'>All</Link>
         <Link to='/culture' className='header-link'>Culture</Link>
         <Link to='/lifestyle' className='header-link'>Lifestyle</Link>
         <Link to='/technology' className='header-link'>Technology</Link>

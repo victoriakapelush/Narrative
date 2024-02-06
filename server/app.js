@@ -1,30 +1,32 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const session = require("express-session");
-const passport = require("passport");
-var indexRouter = require('./routes/index');
-var cultureRouter = require('./routes/index');
-var techRouter = require('./routes/index');
-var peopleRouter = require('./routes/index');
-var lifestyleRouter = require('./routes/index');
-const signupRouter = require('./routes/index')
-const cors = require("cors");
-const bodyParser = require('body-parser');
-var app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(express.json());
-app.use('/', indexRouter);
-app.use('/culture', cultureRouter);
-app.use('/technology', techRouter);
-app.use('/people', peopleRouter);
-app.use('/lifestyle', lifestyleRouter);
-app.use('/signup', signupRouter);
+const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
+const mongoose = require('mongoose');
+const createError = require('http-errors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+
+// Require passport config (assuming it's in a separate file)
+require('./config-passport');
+
+// Import routes
+const allRouter = require('./routes/all');
+const cultureRouter = require('./routes/culture');
+const techRouter = require('./routes/technology');
+const peopleRouter = require('./routes/people');
+const lifestyleRouter = require('./routes/lifestyle');
+const signupRouter = require('./routes/signup');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
+
+const app = express();
+
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 // setup mongoose
-const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 const mongoDB = "mongodb+srv://victoriakapelush:sakuraSun123@cluster0.qpt6ako.mongodb.net/blog?retryWrites=true&w=majority";
 
@@ -33,34 +35,48 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
-require("dotenv").config({ path: "./config.env" });
+// Setup express-session
+app.use(session({
+  secret: 'cats', // Change this to a random string
+  resave: false,
+  saveUninitialized: false
+}));
 
-// view engine setup
-app.use(express.static(path.join(__dirname, '../client/dist')));
-app.set('view engine', 'jade');
-app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
-app.use(logger('dev'));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+// Initialize passport and session
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
+// Setup connect-flash for flash messages
+app.use(flash());
+
+// Other middleware
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define routes
+app.use('/', loginRouter);
+app.use('/all', allRouter);
+app.use('/culture', cultureRouter);
+app.use('/technology', techRouter);
+app.use('/people', peopleRouter);
+app.use('/lifestyle', lifestyleRouter);
+app.use('/signup', signupRouter);
+app.use('/logout', logoutRouter);
+
+// 404 error handler
 app.use(function(req, res, next) {
-  console.log(`Requested URL: ${req.originalUrl}`);
   next(createError(404));
 });
 
+// Error handler
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error'); // Assuming you have an error view
 });
 
 module.exports = app;
