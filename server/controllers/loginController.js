@@ -1,25 +1,33 @@
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
-// Function to get users
-function getUsers(req, res, next) {
-    res.json({ username: req.body.username });
-}
-
-const authenticateLogin = passport.authenticate('local', {
-  successRedirect: '/all',
-  failureRedirect: '/',
-});
-
-const isAuthenticated = (req, res, next) => {
-  if (req.session.user) {
-    // User is authenticated, allow access to the next middleware
-    next();
-  } else {
-    // User is not authenticated, return an error or redirect to login page
-    res.status(401).json({ error: 'Unauthorized' });
+const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Incorrect password' });
+    }
+    // Authenticate user using Passport's req.login() method
+    req.login(user, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+      res.status(200).json({ message: 'Login successful', username });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-module.exports = { getUsers, authenticateLogin, isAuthenticated };
+module.exports = { login };
 
   

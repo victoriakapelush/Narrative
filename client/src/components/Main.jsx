@@ -1,58 +1,32 @@
+/* eslint-disable no-unused-vars */
 import '../styles/home.css';
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function Main() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [error, setError] = useState('');
 
-    const handleUsernameChange = (event) => {
-        setUsername(event.target.value);
-    };
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        try {
-            const response = await fetch('http://localhost:3000', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-
-            window.location.href = '/all';
-        } catch (error) {
-            console.error('Login error:', error);
-            // Handle login error (e.g., display error message to the user)
-        }
-    };
-
-    const handleLogout = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/logout', {
-                method: 'POST'
-            });
-
-            if (!response.ok) {
-                throw new Error('Logout failed');
-            }
-
-            // Redirect the user to the homepage or login page
-            window.location.href = '/';
-        } catch (error) {
-            console.error('Logout error:', error);
-            // Handle logout error (e.g., display error message to the user)
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:3000", credentials);
+      // Assuming the response contains a success message
+      alert(response.data.message);
+      navigate('/all');
+      // Redirect or perform any necessary actions after successful login
+    } catch (error) {
+      console.error('Login failed:', error);
+      setError('Incorrect username or password');
+    }
+  };
 
     return (
         <div>
@@ -60,24 +34,29 @@ function Main() {
                 <h1>Thoughts, stories and <br/> ideas from Narrative</h1>
                 <p>*Login to leave comments and post your stories</p>
                 <div>
+                  {error && <div>{error}</div>}
                     <form className='login-form flex-column-center' onSubmit={handleSubmit}>
                         <input 
+                            placeholder='username' 
                             type="text" 
-                            placeholder='Username' 
+                            name="username" 
+                            value={credentials.username} 
+                            onChange={handleChange} 
                             className='login-input'
-                            value={username}
-                            onChange={handleUsernameChange}
+                            required 
                         />
                         <input 
                             type="password" 
-                            placeholder='Password' 
+                            name="password"
+                            placeholder='password' 
                             className='login-input'
-                            value={password}
-                            onChange={handlePasswordChange}
+                            value={credentials.password}
+                            onChange={handleChange}
+                            required
                         />
                         <button type='submit' className='header-button login-btn'>Log in</button>
                     </form>
-                    <button onClick={handleLogout} className='header-button logout-btn'>Log out</button>
+                    <button type='submit' className='header-button logout-btn'>Log out</button>
                 </div>
             </div>
         </div>

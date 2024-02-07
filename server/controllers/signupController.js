@@ -23,7 +23,7 @@ const signupGet = (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = new User({ username, password: hashedPassword });
       await user.save();
-      res.status(201).json({ message: 'Registration successful' });
+      res.status(201).json({ success: true, message: 'Registration successful' });
       } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });

@@ -1,40 +1,71 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 import '../styles/signup.css'
 import Header from './header'
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 
 function Signup() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSignup = async (event) => {
-    event.preventDefault();
-
-    try {
-      // Make a POST request to the registration endpoint
-      await axios.post('http://localhost:3000/signup', { username, password });
-
-      // Clear form after successful registration
-      setUsername('');
-      setPassword('');
-      alert('User registered successfully');
-      window.location.href = '/';
-    } catch (error) {
-      console.error(error);
-      alert('Registration failed. Please try again.');
-    }
+  const notifySuccess = () => toast.success('Successfully registered!');
+  const notifyError = () => toast.error('Something went wrong... Please try again');
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState({
+    password: "",
+    username: "",
+  });
+  const { password, username } = inputValue;
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/signup",
+        {
+          ...inputValue,
+        },
+        { withCredentials: true }
+      );
+      const { success, message } = data;
+      if (success) {
+        notifySuccess();
+        setTimeout(() => {
+          navigate("/all");
+        }, 1000);
+      } else {
+        notifyError(); 
+      }
+    } catch (error) {
+      console.log(error);
+      // Handle error message display if needed
+    }
+
+    setInputValue({
+      ...inputValue,
+      password: "",
+      username: "",
+    });
+  };
+
   return (
     <div>
         <Header />
         <div className='home-login flex-column-center'>
             <h1>Sign up to create posts,<br/> and leave comments on Narrative</h1>
             <div>
-                <form className='login-form flex-column-center' onSubmit={handleSignup}>
-                    <input type="text" placeholder='username' className='login-input' name='username' value={username} onChange={(e) => setUsername(e.target.value)}></input>
-                    <input type="password" placeholder='password' className='login-input' name="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                    <button type='submit' className='header-button login-btn'>Sign up</button>
+                <form className='login-form flex-column-center' onSubmit={handleSubmit}>
+                    <input type="text" placeholder='username' className='login-input' name='username' value={username} onChange={handleOnChange}></input>
+                    <input type="password" placeholder='password' className='login-input' name="password" value={password} onChange={handleOnChange}></input>
+                    <button type='submit' className='header-button login-btn' onClick={handleSubmit}>Sign up</button>
+                    <Toaster />
                 </form>
             </div>
         </div>

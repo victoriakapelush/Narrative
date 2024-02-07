@@ -8,36 +8,36 @@ import { DateTime } from 'luxon';
 // Create a new context for managing authentication state
 
 function Home() {
-  const [posts, setPosts] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [allPosts, setAllPosts] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        // Check if the user is logged in
-        const response = await axios.get('http://localhost:3000');
-        setIsLoggedIn(response.data.loggedIn);
+    // Make a request to check if the user is authenticated
+    axios.get('http://localhost:3000')
+      .then(response => {
+        setUser(response.data.user);
+      })
+      .catch(error => {
+        console.error('Authentication failed:', error);
+      });
+  }, []);
 
-        // If the user is logged in, fetch posts
-        if (response.data.loggedIn) {
-          const postsResponse = await axios.get('http://localhost:3000/all');
-          setPosts(postsResponse.data);
-        }
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    }
-
-    fetchPosts();
+  useEffect(() => {
+    axios.get('http://localhost:3000/all')
+      .then(response => {
+        setAllPosts(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching all posts:', error);
+      });
   }, []);
 
   return (
     <div>
       <Header />
-      {isLoggedIn ? (
-        posts.length > 0 ? (
+      {user && allPosts.length > 0 ? (
           <div className='flex-row post-wrapper'>
-            {posts.map((post) => (
+            {allPosts.map((post) => (
               <Link to={post._id} key={post._id} className='flex-row-center post-container'>
                 {post.image && <img src={`http://localhost:3000/${post.image}`} className="image square" alt="post"></img>}
                 <div className='flex-column post-brief-info square'>
@@ -52,11 +52,9 @@ function Home() {
             ))}
           </div>
         ) : (
-          <p>Please log in to view posts</p>
+          <p>Please login to view posts</p>
         )
-      ) : (
-        <p>Please log in to view posts</p>
-      )}
+      }
     </div>
   );
 }

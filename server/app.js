@@ -3,6 +3,8 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const jwt = require('jsonwebtoken');
 const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -24,9 +26,16 @@ const logoutRouter = require('./routes/logout');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true
+}));
 
 // setup mongoose
+const store = new MongoDBStore({
+  uri: 'mongodb+srv://victoriakapelush:sakuraSun123@cluster0.qpt6ako.mongodb.net/blog?retryWrites=true&w=majority',
+  collection: 'sessions'
+});
 mongoose.set('strictQuery', false);
 const mongoDB = "mongodb+srv://victoriakapelush:sakuraSun123@cluster0.qpt6ako.mongodb.net/blog?retryWrites=true&w=majority";
 
@@ -37,9 +46,13 @@ async function main() {
 
 // Setup express-session
 app.use(session({
-  secret: 'cats', // Change this to a random string
+  secret: 'cats',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  },
 }));
 
 // Initialize passport and session
@@ -76,7 +89,6 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
-  res.render('error'); // Assuming you have an error view
 });
 
 module.exports = app;
