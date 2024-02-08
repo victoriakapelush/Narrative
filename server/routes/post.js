@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); 
+const { addPost } = require('../controllers/addPostController');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-});
+router.post('/', upload.single('image'), addPost);
 
 module.exports = router;

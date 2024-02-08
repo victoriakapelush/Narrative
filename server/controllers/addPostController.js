@@ -1,29 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/post');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); 
+const Post = require('../models/Post')
 
-router.get('/', (req, res) => {
-  res.render('addNew', { title: 'Add new product' }); 
-});
-
-router.post('/', upload.single('image'), async (req, res) => {
-  const { title, text } = req.body;
-
+const addPost = async (req, res) => {
+  const { title, text, description } = req.body;
   try {
-    const newPost = new Post({
-      title,
-      image: req.file.filename,
-      text
-    });
-
-    const savedProduct = await newPost.save();
-    res.redirect('/');
+      let imagePath;
+      if (req.file) {
+          imagePath = req.file.filename;
+      }
+      const newPost = new Post({
+          title,
+          description,
+          image: imagePath,
+          text
+      });
+      await newPost.save();
+      res.status(201).send('Post created successfully');
   } catch (error) {
-    console.error('Error adding post:', error);
-    res.status(500).send('Internal Server Error');
+      console.error('Error adding post:', error);
+      res.status(500).send('Internal Server Error');
   }
-});
+};
 
-module.exports = router;
+module.exports = { addPost };

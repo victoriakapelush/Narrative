@@ -23,6 +23,7 @@ const lifestyleRouter = require('./routes/lifestyle');
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
+const addPostRouter = require('./routes/post');
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('uploads')); // Serve uploaded files
 
 // Define routes
 app.use('/', loginRouter);
@@ -83,6 +85,7 @@ app.use('/lifestyle', lifestyleRouter);
 app.use('/lifestyle/:id', lifestyleRouter);
 app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
+app.use('/addpost', addPostRouter)
 
 // 404 error handler
 app.use(function(req, res, next) {
