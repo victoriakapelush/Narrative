@@ -6,6 +6,7 @@ import All from './components/All.jsx'
 import Culture from './components/Culture.jsx'
 import People from './components/People.jsx'
 import Post from './components/Post.jsx'
+import CreatePost from './components/CreatePost.jsx'
 import Lifestyle from './components/Lifestyle.jsx'
 import Technology from './components/Technology.jsx'
 import './styles/index.css'
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/all',
     element: <All />,
+  },
+  {
+    path: '/all/:id',
+    element: <Post />,
   },
   {
     path: '/culture',
@@ -59,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: '/:id',
     element: <Post />
+  },
+  {
+    path: '/create_post',
+    element: <CreatePost />
   }
 ]);
 

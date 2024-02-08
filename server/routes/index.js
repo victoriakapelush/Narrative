@@ -7,12 +7,6 @@ const upload = multer({ dest: 'uploads/' });
 
 const User = require('../models/user');
 
-router.get('/:id', (req, res) => {
-  Post.findById(req.params.id)
-    .then(post => res.json(post))
-    .catch(err => res.status(404).json({ nopostsfound: 'No post found' }));
-});
-
 router.post('/all', upload.single('image'), async (req, res) => {
   try {
       // Create a new post instance using data from the request body

@@ -5,22 +5,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 
-// Create a new context for managing authentication state
-
 function Home() {
   const [allPosts, setAllPosts] = useState([]);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Make a request to check if the user is authenticated
-    axios.get('http://localhost:3000')
-      .then(response => {
-        setUser(response.data.user);
-      })
-      .catch(error => {
-        console.error('Authentication failed:', error);
-      });
-  }, []);
 
   useEffect(() => {
     axios.get('http://localhost:3000/all')
@@ -35,7 +21,7 @@ function Home() {
   return (
     <div>
       <Header />
-      {user && allPosts.length > 0 ? (
+      {allPosts.length > 0 ? (
           <div className='flex-row post-wrapper'>
             {allPosts.map((post) => (
               <Link to={post._id} key={post._id} className='flex-row-center post-container'>

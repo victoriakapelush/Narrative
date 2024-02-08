@@ -72,10 +72,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Define routes
 app.use('/', loginRouter);
 app.use('/all', allRouter);
+app.use('/all/:id', allRouter)
 app.use('/culture', cultureRouter);
+app.use('/culture/:id', cultureRouter);
 app.use('/technology', techRouter);
+app.use('/technology/:id', techRouter);
 app.use('/people', peopleRouter);
+app.use('/people/:id', peopleRouter);
 app.use('/lifestyle', lifestyleRouter);
+app.use('/lifestyle/:id', lifestyleRouter);
 app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
 

@@ -38,14 +38,13 @@ function Signup() {
       if (success) {
         notifySuccess();
         setTimeout(() => {
-          navigate("/all");
+          navigate("/create_post");
         }, 1000);
       } else {
         notifyError(); 
       }
     } catch (error) {
       console.log(error);
-      // Handle error message display if needed
     }
 
     setInputValue({

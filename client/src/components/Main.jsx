@@ -20,7 +20,7 @@ function Main() {
       const response = await axios.post("http://localhost:3000", credentials);
       // Assuming the response contains a success message
       alert(response.data.message);
-      navigate('/all');
+      navigate('/create_post');
       // Redirect or perform any necessary actions after successful login
     } catch (error) {
       console.error('Login failed:', error);

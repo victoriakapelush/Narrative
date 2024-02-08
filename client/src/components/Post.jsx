@@ -21,7 +21,7 @@ function Post() {
     
       useEffect(() => {
         axios
-          .get(`http://localhost:3000/${id}`)
+          .get(`http://localhost:3000/all/${id}`)
           .then((res) => {
             setPost({
               title: res.data.title,

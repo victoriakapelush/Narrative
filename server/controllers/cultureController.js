@@ -6,6 +6,10 @@ const getCulturePosts = (req, res) => {
     .catch(err => res.status(404).json({ nopostsfound: 'No posts found' }));
 };
 
-module.exports = {
-  getCulturePosts,
+const getAllIndiidualPosts = (req, res) => {
+  Post.findById(req.params.id)
+  .then(post => res.json(post))
+  .catch(err => res.status(404).json({ nopostsfound: 'No post found' }));
 };
+
+module.exports = { getCulturePosts, getAllIndiidualPosts };
