@@ -3,22 +3,36 @@ import Header from './Header'
 import '../styles/home.css'
 import '../styles/post.css'
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { DateTime } from 'luxon';
 
 function Lifestyle() {
-    const [lifestylePosts, setLifestylePosts] = useState([]);
+  const navigate = useNavigate();
+  const [lifestylePosts, setLifestylePosts] = useState([]);
 
-    useEffect(() => {
-      axios.get('http://localhost:3000/lifestyle')
-        .then(response => {
-          setLifestylePosts(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching culture posts:', error);
+  useEffect(() => {
+    const fetchLifestylePosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/');
+          return;
+        }
+        const tokenWithoutBearer = token.replace('Bearer ', '');
+        const response = await axios.get('http://localhost:3000/lifestyle', {
+          headers: {
+            Authorization: `Bearer ${tokenWithoutBearer}`,
+          },
         });
-    }, []);
+        setLifestylePosts(response.data);
+      } catch (error) {
+        console.error('Error fetching lifestyle posts:', error);
+      }
+    };
+    fetchLifestylePosts();
+  }, []);
 
     return(
         <div>

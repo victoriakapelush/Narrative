@@ -14,7 +14,8 @@ function Post() {
         image: '',
         description: '',
         tag: '',
-        time: ''
+        time: '',
+        user: 'Unknown Author'
       });
     
       const { id } = useParams();
@@ -29,7 +30,8 @@ function Post() {
               text: res.data.text,
               tag: res.data.tag,
               image: res.data.image,
-              time: res.data.time
+              time: res.data.time,
+              user: res.data.user || "Unknown Author"
             });
           })
           .catch((err) => {
@@ -46,6 +48,7 @@ function Post() {
                 <h2 className='separate-post-title'>{post.title}</h2>
                 <p className='separate-post-description'>{post.description}</p>
                 <div className='flex-row separate-tag-container'>
+                  <p className='separate-post-tag'>{post.user}</p>
                   <p className='separate-post-tag'>{post.tag}</p>
                   <p className='separate-date-tag'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>

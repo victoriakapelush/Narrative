@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post')
+const User = require('../models/user')
 
 const addPost = async (req, res) => {
-  const { title, text, description } = req.body;
+  const { title, text, description, user } = req.body;
   try {
       let imagePath;
       if (req.file) {
@@ -13,7 +14,8 @@ const addPost = async (req, res) => {
           title,
           description,
           image: imagePath,
-          text
+          text,
+          user
       });
       await newPost.save();
       res.status(201).send('Post created successfully');

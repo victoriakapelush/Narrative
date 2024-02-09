@@ -21,7 +21,7 @@ function Main() {
       const { token } = response.data;
       localStorage.setItem('token', token);
       // Redirect to culture page on successful login
-      navigate('/culture');
+      navigate('/all');
     } catch (error) {
       console.error('Login error:', error);
       setError('Invalid username or password');

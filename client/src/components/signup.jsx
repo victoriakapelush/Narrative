@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 import '../styles/signup.css'
-import Header from './header'
+import Header from './Header';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";

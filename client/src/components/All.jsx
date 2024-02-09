@@ -2,20 +2,34 @@ import '../styles/home.css';
 import Header from './Header';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { DateTime } from 'luxon';
 
 function Home() {
+  const navigate = useNavigate();
   const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/all')
-      .then(response => {
+    const fetchAllPosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/');
+          return;
+        }
+        const tokenWithoutBearer = token.replace('Bearer ', '');
+        const response = await axios.get('http://localhost:3000/all', {
+          headers: {
+            Authorization: `Bearer ${tokenWithoutBearer}`,
+          },
+        });
         setAllPosts(response.data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching all posts:', error);
-      });
+      }
+    };
+    fetchAllPosts();
   }, []);
 
   return (
@@ -30,6 +44,7 @@ function Home() {
                   <h2>{post.title}</h2>
                   <p className='post-description'>{post.description}</p>
                   <div className='flex-row tag-date-container'>
+                    <p className='post-date'>{post.user || "Unknown Author"}</p>
                     <p className='post-date'>{post.tag}</p>
                     <p className='post-date'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                   </div>

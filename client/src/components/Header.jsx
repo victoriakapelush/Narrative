@@ -15,6 +15,7 @@ function Header() {
         <Link to='/people' className='header-link'>People</Link>
       </div>
       <div className='flex-row-center'>
+      <Link to='/addpost' className='header-button'>Create Post</Link>
         <Link to='/signup' className='header-button'>Sign up</Link>
       </div>
     </div>

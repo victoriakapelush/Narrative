@@ -4,21 +4,35 @@ import '../styles/home.css'
 import '../styles/post.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { DateTime } from 'luxon';
 
 function Technology() {
-    const [techPosts, setTechPosts] = useState([]);
+  const navigate = useNavigate();
+  const [techPosts, setTechPosts] = useState([]);
 
-    useEffect(() => {
-      axios.get('http://localhost:3000/technology')
-        .then(response => {
-          setTechPosts(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching culture posts:', error);
+  useEffect(() => {
+    const fetchTechPosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/');
+          return;
+        }
+        const tokenWithoutBearer = token.replace('Bearer ', '');
+        const response = await axios.get('http://localhost:3000/technology', {
+          headers: {
+            Authorization: `Bearer ${tokenWithoutBearer}`,
+          },
         });
-    }, []);
+        setTechPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching technology posts:', error);
+      }
+    };
+    fetchTechPosts();
+  }, []);
 
     return(
         <div>

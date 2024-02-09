@@ -9,7 +9,6 @@ import axios from "axios";
 import { DateTime } from 'luxon';
 
 function Culture() {
-
   const navigate = useNavigate();
   const [culturePosts, setCulturePosts] = useState([]);
 
@@ -17,31 +16,21 @@ function Culture() {
     const fetchCulturePosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('JWT Token:', token); // Log the JWT token
         if (!token) {
           navigate('/');
           return;
         }
-        console.log('Axios Request Configuration:', {
-          url: 'http://localhost:3000/culture',
-          method: 'post',
-          headers: {
-            Authorization: token,
-          },
-        });
         const tokenWithoutBearer = token.replace('Bearer ', '');
         const response = await axios.get('http://localhost:3000/culture', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
         });
-        console.log(response.data)
         setCulturePosts(response.data);
       } catch (error) {
         console.error('Error fetching culture posts:', error);
       }
     };
-    
     fetchCulturePosts();
   }, []);
 

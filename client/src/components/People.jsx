@@ -4,21 +4,35 @@ import '../styles/home.css'
 import '../styles/post.css'
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { DateTime } from 'luxon';
 
 function People() {
-    const [peoplePosts, setPeoplePosts] = useState([]);
+  const navigate = useNavigate();
+  const [peoplePosts, setPeoplePosts] = useState([]);
 
-    useEffect(() => {
-      axios.get('http://localhost:3000/people')
-        .then(response => {
-          setPeoplePosts(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching culture posts:', error);
+  useEffect(() => {
+    const fetchPeoplePosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/');
+          return;
+        }
+        const tokenWithoutBearer = token.replace('Bearer ', '');
+        const response = await axios.get('http://localhost:3000/people', {
+          headers: {
+            Authorization: `Bearer ${tokenWithoutBearer}`,
+          },
         });
-    }, []);
+        setPeoplePosts(response.data);
+      } catch (error) {
+        console.error('Error fetching people posts:', error);
+      }
+    };
+    fetchPeoplePosts();
+  }, []);
 
     return(
         <div>
