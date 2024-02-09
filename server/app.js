@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-// Require passport config (assuming it's in a separate file)
 require('./config-passport');
 
 // Import routes

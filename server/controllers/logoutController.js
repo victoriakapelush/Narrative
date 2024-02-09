@@ -6,7 +6,7 @@ function logoutUser (req, res, next) {
       if (err) {
         return next(err);
       }
-      res.redirect("/");
+      res.redirect("/signup");
     });
   };
 

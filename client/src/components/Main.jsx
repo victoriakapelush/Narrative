@@ -17,6 +17,43 @@ function Main() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const response = await axios.post('http://localhost:3000', credentials);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      // Redirect to culture page on successful login
+      navigate('/culture');
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Invalid username or password');
+    }
+  };
+
+  /*const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('token', token);
+        navigate('/culture');
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred during login');
+    }
+  };*/
+
+  /*const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
       const response = await axios.post("http://localhost:3000", credentials);
       // Assuming the response contains a success message
       alert(response.data.message);
@@ -26,7 +63,7 @@ function Main() {
       console.error('Login failed:', error);
       setError('Incorrect username or password');
     }
-  };
+  };*/
 
     return (
         <div>
@@ -41,7 +78,7 @@ function Main() {
                             type="text" 
                             name="username" 
                             value={credentials.username} 
-                            onChange={handleChange} 
+                            onChange={handleChange}
                             className='login-input'
                             required 
                         />
