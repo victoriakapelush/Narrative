@@ -44,9 +44,9 @@ function Home() {
                   <h2>{post.title}</h2>
                   <p className='post-description'>{post.description}</p>
                   <div className='flex-row tag-date-container'>
-                    <p className='post-date'>{post.user || "Unknown Author"}</p>
-                    <p className='post-date'>{post.tag}</p>
-                    <p className='post-date'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                    <p className='post-date flex-row-center'>{post.user || "Unknown Author"}</p>
+                    <p className='post-date flex-row-center'>{post.tag}</p>
+                    <p className='post-date flex-row-center'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                   </div>
                 </div>
               </Link>

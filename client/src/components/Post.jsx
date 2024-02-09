@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import '../styles/home.css'
-import React, { useState, useEffect } from 'react';
+import '../styles/editor.css'
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { DateTime } from 'luxon';
 import Header from './Header'
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css'; // Add Quill styles
 
 function Post() {
     const [post, setPost] = useState({
@@ -38,6 +41,27 @@ function Post() {
             console.log('Unable to extract data');
           });
       }, [id]);
+
+      const isMounted = useRef(false);
+      const editor = useRef(null);
+    
+      useEffect(() => {
+        if (!isMounted.current) {
+          editor.current = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+              toolbar: [
+                [{ 'header': [1, 2, 3, 4, false] }],
+                ['bold', 'italic', 'underline'],
+                ['link'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['clean']
+              ]
+            }
+          });
+          isMounted.current = true;
+        }
+      }, []);
   
     return (
       <div>
@@ -48,7 +72,7 @@ function Post() {
                 <h2 className='separate-post-title'>{post.title}</h2>
                 <p className='separate-post-description'>{post.description}</p>
                 <div className='flex-row separate-tag-container'>
-                  <p className='separate-post-tag'>{post.user}</p>
+                  <p className='separate-post-tag'>by {post.user || "Unknown Author"}</p>
                   <p className='separate-post-tag'>{post.tag}</p>
                   <p className='separate-date-tag'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                 </div>
@@ -56,6 +80,10 @@ function Post() {
               {post.image && <img src={`http://localhost:3000/${post.image}`} className="post-image" alt={post.title} />}
                 <p className='separate-post-text'>{post.text}</p>
             </div>
+          </div>
+          <div className="flex-column">
+            <h3 className='comment-heading'>Leave your comment below: </h3>
+            <div ref={editor} id="editor"/>
           </div>
       </div>
     );
