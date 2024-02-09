@@ -44,6 +44,7 @@ function Post() {
 
       const isMounted = useRef(false);
       const editor = useRef(null);
+      const quillRef = useRef(null);
     
       useEffect(() => {
         if (!isMounted.current) {
@@ -62,6 +63,17 @@ function Post() {
           isMounted.current = true;
         }
       }, []);
+
+        // Event handler for submit button
+  const handleSubmit = () => {
+    const quill = quillRef.current;
+    if (quill) {
+      // Retrieve the content from the Quill editor
+      const content = quill.root.innerHTML;
+      // Perform any action here, such as submitting the content to a server
+      console.log('Content:', content);
+    }
+  };
   
     return (
       <div>
@@ -84,6 +96,11 @@ function Post() {
           <div className="flex-column">
             <h3 className='comment-heading'>Leave your comment below: </h3>
             <div ref={editor} id="editor"/>
+            <div className='flex-row-center buttons-comment-container'>
+              <button onClick={handleSubmit} type='submit' className='header-button'>Submit</button>
+              <button className='header-button'>Modify</button>
+              <button className='header-button'>Delete</button>
+            </div>
           </div>
       </div>
     );

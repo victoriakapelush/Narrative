@@ -23,6 +23,7 @@ const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const addPostRouter = require('./routes/post');
+const addCommentRouter = require('./routes/addComment');
 
 const app = express();
 
@@ -73,7 +74,7 @@ app.use(express.static('uploads')); // Serve uploaded files
 // Define routes
 app.use('/', loginRouter);
 app.use('/all', allRouter);
-app.use('/all/:id', allRouter)
+app.use('/all/:id', allRouter, addCommentRouter)
 app.use('/culture', cultureRouter);
 app.use('/culture/:id', cultureRouter);
 app.use('/technology', techRouter);
