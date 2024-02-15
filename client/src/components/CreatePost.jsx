@@ -17,6 +17,7 @@ function CreatePost() {
     text: '',
     user: ''
   });
+  
   const [user, setUser] = useState([]);
 
   useEffect(() => {
