@@ -3,7 +3,7 @@ const router = express.Router();
 const { verifyJWT } = require('../controllers/loginController')
 const { getPeoplePosts, getAllIndiidualPosts } = require('../controllers/peopleController');
 
-router.get("/", verifyJWT, getPeoplePosts);
-router.get("/:id", verifyJWT, getAllIndiidualPosts);
+router.get("/", getPeoplePosts);
+router.get("/:id", getAllIndiidualPosts);
 
 module.exports = router;

@@ -18,7 +18,8 @@ function Post() {
         description: '',
         tag: '',
         time: '',
-        user: 'Unknown Author'
+        user: 'Unknown Author',
+        comments: 'No comments yet'
       });
     
       const { id } = useParams();
@@ -34,7 +35,8 @@ function Post() {
               tag: res.data.tag,
               image: res.data.image,
               time: res.data.time,
-              user: res.data.user || "Unknown Author"
+              user: res.data.user || "Unknown Author",
+              comments: res.data.comments || "No comments yet"
             });
           })
           .catch((err) => {
@@ -64,13 +66,10 @@ function Post() {
         }
       }, []);
 
-        // Event handler for submit button
   const handleSubmit = () => {
     const quill = quillRef.current;
     if (quill) {
-      // Retrieve the content from the Quill editor
       const content = quill.root.innerHTML;
-      // Perform any action here, such as submitting the content to a server
       console.log('Content:', content);
     }
   };
@@ -92,6 +91,7 @@ function Post() {
               {post.image && <img src={`http://localhost:3000/${post.image}`} className="post-image" alt={post.title} />}
                 <p className='separate-post-text'>{post.text}</p>
             </div>
+            <div>{post.comments} Posted by {post.user}</div>
           </div>
           <div className="flex-column">
             <h3 className='comment-heading'>Leave your comment below: </h3>

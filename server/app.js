@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
@@ -69,12 +70,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static('uploads')); // Serve uploaded files
+app.use(express.static('uploads')); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
 app.use('/', loginRouter);
 app.use('/all', allRouter);
-app.use('/all/:id', allRouter, addCommentRouter)
+app.use('/all/:id', allRouter);
+app.use('/all', addCommentRouter);
 app.use('/culture', cultureRouter);
 app.use('/culture/:id', cultureRouter);
 app.use('/technology', techRouter);
