@@ -29,7 +29,7 @@ const addCommentRouter = require('./routes/addComment');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://narrative-blog.onrender.com', 
   credentials: true
 }));
 
