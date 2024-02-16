@@ -34,16 +34,18 @@ app.use(cors({
 }));
 
 // setup mongoose
+const config = require('./config');
+const mongoDB = config.mongoDB;
 const store = new MongoDBStore({
   uri: mongoDB,
   collection: 'sessions'
 });
 mongoose.set('strictQuery', false);
-const mongoDB = mongoDB;
+const mongoDBase = mongoDB;
 
 main().catch(err => console.log(err));
 async function main() {
-  await mongoose.connect(mongoDB);
+  await mongoose.connect(mongoDBase);
 }
 
 // Setup express-session
