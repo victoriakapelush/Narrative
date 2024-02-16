@@ -4,7 +4,7 @@ const app = express();
 const session = require('express-session');
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-const User = require('./models/user');
+const User = require('./models/User');
 const { createSecretToken } = require("./SecretToken");
 
 passport.use(
@@ -14,7 +14,6 @@ passport.use(
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
       }
-      // Compare hashed password
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return done(null, false, { message: "Incorrect password" });

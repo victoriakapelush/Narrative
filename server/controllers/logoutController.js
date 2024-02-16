@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
 function logoutUser (req, res, next) {
     req.logout((err) => {
       if (err) {

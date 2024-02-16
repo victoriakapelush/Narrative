@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require('passport');
 const { login, verifyJWT } = require('../controllers/loginController');
 
 router.get('/', verifyJWT, (req, res) => {

@@ -1,26 +1,19 @@
 var express = require('express');
 var router = express.Router();
-const path = require('path');
-const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); 
 
-const User = require('../models/user');
-
 router.post('/all', upload.single('image'), async (req, res) => {
   try {
-      // Create a new post instance using data from the request body
       const newPost = new Post({
           title: req.body.title,
           image: req.file.filename,
           description: req.body.description,
           text: req.body.text
       });
-
-      // Save the new post to the database
       const savedPost = await newPost.save();
 
-      res.status(201).json(savedPost); // Respond with the saved post
+      res.status(201).json(savedPost); 
   } catch (error) {
       console.error('Error saving post:', error);
       res.status(500).json({ error: 'Internal Server Error' });
