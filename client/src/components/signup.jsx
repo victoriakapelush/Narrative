@@ -34,11 +34,13 @@ function Signup() {
         },
         { withCredentials: true }
       );
-      const { success, message } = data;
+      const { success, message, token } = data;
+      console.log("Token received:", token);
       if (success) {
+        localStorage.setItem('token', token);
         notifySuccess();
         setTimeout(() => {
-          navigate("/create_post");
+          navigate("/all");
         }, 1000);
       } else {
         notifyError(); 
@@ -60,10 +62,10 @@ function Signup() {
         <div className='home-login flex-column-center'>
             <h1>Sign up to create posts,<br/> and leave comments on Narrative</h1>
             <div>
-                <form className='login-form flex-column-center' onSubmit={handleSubmit}>
+                <form className='login-form flex-column-center' onSubmit={handleSubmit} method="post">
                     <input type="text" placeholder='username' className='login-input' name='username' value={username} onChange={handleOnChange}></input>
                     <input type="password" placeholder='password' className='login-input' name="password" value={password} onChange={handleOnChange}></input>
-                    <button type='submit' className='header-button login-btn' onClick={handleSubmit}>Sign up</button>
+                    <button type='submit' className='header-button login-btn'>Sign up</button>
                     <Toaster />
                 </form>
             </div>

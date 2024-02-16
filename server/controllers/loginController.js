@@ -14,7 +14,6 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Incorrect password' });
     }
-    
       const payload = {
         id: user._id,
         username: user.username
