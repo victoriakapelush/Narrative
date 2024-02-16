@@ -1,11 +1,7 @@
 const passport = require("passport");
-var express = require('express');
-const app = express();
-const session = require('express-session');
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const User = require('./models/User');
-const { createSecretToken } = require("./SecretToken");
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

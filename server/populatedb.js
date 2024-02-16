@@ -5,7 +5,7 @@ console.log(
   // Get arguments passed on command line
   const userArgs = process.argv.slice(2);
   
-  const Post = require("./models/post");
+  const Post = require("./models/Post");
   
   const posts = [];
   
