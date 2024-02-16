@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import '../styles/createPost.css'
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import '../styles/editor.css'
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Header from './Header'
 import toast, { Toaster } from 'react-hot-toast';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css'; 
 
 function CreatePost() {
   const notifySuccess = () => toast.success('Successfully created post!');
@@ -15,6 +18,7 @@ function CreatePost() {
     description: '',
     image: '',
     text: '',
+    tag: '',
     user: ''
   });
   
@@ -51,7 +55,8 @@ function CreatePost() {
       formDataToSend.append('image', formData.image);
       formDataToSend.append('text', formData.text);
       formDataToSend.append('user', user.username);
-  
+      const selectedTag = document.getElementById('tags').value;
+      formDataToSend.append('tag', selectedTag);
       await axios.post('http://localhost:3000/addpost', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -72,6 +77,28 @@ function CreatePost() {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+    // Display editor
+    const isMounted = useRef(false);
+    const editor = useRef(null);
+  
+    useEffect(() => {
+      if (!isMounted.current && editor.current) {
+        editor.current = new Quill('#editor', {
+          theme: 'snow',
+          modules: {
+            toolbar: [
+              [{ 'header': [1, 2, 3, 4, false] }],
+              ['bold', 'italic', 'underline'],
+              ['link'],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              ['clean']
+            ]
+          }
+        });
+        isMounted.current = true;
+      }
+    }, []);
       
     return (
       <div>
@@ -79,14 +106,9 @@ function CreatePost() {
           <h1 className='create-post-heading'>Welcome, {user.username}</h1>
           <p>Here you can share your thoughts and ideas</p>
           <form className='flex-column-center create-form-container' method='post' onSubmit={handleSubmit} encType='multipart/form-data'>
-            <label className='title'>Title</label>
-            <input type="text" name="title" placeholder='title' onChange={handleChange}></input>
-            <label className='description'>Brief description</label>
-            <textarea type="text" name="description" placeholder='description' onChange={handleChange}></textarea>
-            <label>Add Image</label>
+            <input type="text" name="title" placeholder='add title' onChange={handleChange}></input>
+            <textarea type="text" name="description" placeholder='add brief description' onChange={handleChange}></textarea>
             <input type="file" name="image" onChange={handleChange}></input>
-            <label className='text'>Text</label>
-            <textarea type="text" name="text" onChange={handleChange} placeholder='text'></textarea>
             <label className='tag'>Choose the relevant tag</label>
             <select id="tags" name="tags">
                 <option value="Culture">Culture</option>
@@ -94,6 +116,11 @@ function CreatePost() {
                 <option value="Lifestyle">Lifestyle</option>
                 <option value="Technology">Technology</option>
             </select>
+            <div className="flex-column">
+              <div ref={editor} id="editor" />
+                <div>
+              </div>
+            </div>
             <button className='create-post-submit' type='submit'>Submit</button>
           </form>
       </div>

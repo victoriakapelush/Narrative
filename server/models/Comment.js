@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
-const Post = require("../models/Post");
 
 const { Schema } = mongoose;
 

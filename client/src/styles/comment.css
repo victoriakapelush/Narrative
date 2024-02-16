@@ -1,7 +1,8 @@
 .comment {
-    border: 1px solid transparent;
-    padding: 1rem 5rem;
+    border: 1px solid rgb(208, 206, 206);
+    padding: 1.1rem 4rem;
     height: auto;
+    margin: 0 11rem;
 }
 
 .comments-container {
@@ -18,4 +19,8 @@
     font-size: .9rem;
     width: 100%;
     height: auto;
+}
+
+.comments-buttons {
+    margin: 1rem auto;
 }

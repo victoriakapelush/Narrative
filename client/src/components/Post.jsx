@@ -120,7 +120,21 @@ function Post() {
       notifyError();
     }
   }, [id, post, user]);
-  
+
+  const deleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:3000/all/${id}`, {
+        data: { content: commentId } 
+      });
+      setPost(prevPost => ({
+        ...prevPost,
+        comments: prevPost.comments.filter(comment => comment !== commentId)
+      }));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      notifyError();
+    }
+  };
   
   return (
     <div>
@@ -147,6 +161,9 @@ function Post() {
                   <div className='comment' key={`user-${index}`}>
                     <p className='text-comment'>{DOMPurify.sanitize(removeHTMLTags(post.comments[index]))}</p>
                     <p className='user-comment'>Posted by user &quot;{post.comments[index + 1]}&quot;</p>
+                    <div className='comments-buttons flex-row-center'>
+                      <button className='header-button' onClick={() => deleteComment(post.comments[index])}>Delete</button>
+                    </div>
                   </div>
                 )}
               </React.Fragment>
@@ -160,8 +177,6 @@ function Post() {
           <div ref={editor} id="editor" />
           <div className='flex-row-center buttons-comment-container'>
             <button type='submit' className='header-button'>Submit</button>
-            <button className='header-button'>Modify</button>
-            <button className='header-button'>Delete</button>
           </div>
         </form>
       </div>

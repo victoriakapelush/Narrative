@@ -4,7 +4,7 @@ const Post = require('../models/Post')
 const User = require('../models/user')
 
 const addPost = async (req, res) => {
-  const { title, text, description, user } = req.body;
+  const { title, text, description, user, tag } = req.body;
   try {
       let imagePath;
       if (req.file) {
@@ -15,6 +15,7 @@ const addPost = async (req, res) => {
           description,
           image: imagePath,
           text,
+          tag,
           user
       });
       await newPost.save();
