@@ -34,8 +34,7 @@ app.use(cors({
 }));
 
 // setup mongoose
-const config = require('./config');
-const mongoDB = config.mongoDB;
+const mongoDB = process.env.mongoDB;
 const store = new MongoDBStore({
   uri: mongoDB,
   collection: 'sessions'
