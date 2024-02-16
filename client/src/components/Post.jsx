@@ -83,7 +83,7 @@ function Post() {
     }
   }, []);
 
-  const notifySuccess = () => toast.success('Successfully created comment!');
+  const notifySuccess = () => toast.success('Comment successfully created!');
   const notifyError = () => toast.error('Something went wrong... Please try again');
 
 
