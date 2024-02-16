@@ -1,0 +1,18 @@
+.comment {
+    border: 1px solid transparent;
+    padding: 1rem 5rem;
+    height: auto;
+}
+
+.comments-container {
+    gap: 1rem;
+}
+
+.text-comment {
+    font-size: 1.3rem;
+    width: 100%;
+}
+
+.user-comment {
+    font-size: .9rem;
+}

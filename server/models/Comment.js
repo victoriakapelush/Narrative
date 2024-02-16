@@ -11,7 +11,7 @@ const CommentSchema = new Schema({
     default: () => DateTime.local().toLocaleString(
       { month: 'long', day: '2-digit', year: 'numeric' }),
   },
-  user: { type: Schema.Types.ObjectId, ref: "User" }
+  user: { type: String },
 });
 
 module.exports = mongoose.model("Comment", CommentSchema);

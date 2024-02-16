@@ -58,7 +58,6 @@ function CreatePost() {
         },
       });
       notifySuccess();
-      // Optionally, navigate to another page after successful submission
     } catch (error) {
       console.error('Error creating post:', error);
       notifyError();
