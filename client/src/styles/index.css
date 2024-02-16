@@ -49,6 +49,7 @@ a {
   cursor: pointer;
   transition: transform 250ms, opacity 250ms;
   letter-spacing: .6px;
+  color: #171c26;
 }
 
 a:visited {
