@@ -1,7 +1,21 @@
 import '../styles/header.css'
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Header() {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get('http://localhost:3000');
+      const { token } = response.data;
+      localStorage.removeItem('token', token);
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
   return (
     <div className='flex-row-spacebtw header'>
       <div className='website-name'>
@@ -15,8 +29,11 @@ function Header() {
         <Link to='/people' className='header-link'>People</Link>
       </div>
       <div className='flex-row-center'>
-      <Link to='/addpost' className='header-button'>Create Post</Link>
+        <Link to='/addpost' className='header-button'>Create Post</Link>
         <Link to='/signup' className='header-button'>Sign up</Link>
+        <form method='post' onClick={handleSubmit}>
+          <button type='submit' className='header-button logout-btn'>Log out</button>
+        </form>
       </div>
     </div>
   )

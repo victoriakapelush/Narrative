@@ -11,8 +11,11 @@
 .text-comment {
     font-size: 1.3rem;
     width: 100%;
+    height: auto;
 }
 
 .user-comment {
     font-size: .9rem;
+    width: 100%;
+    height: auto;
 }

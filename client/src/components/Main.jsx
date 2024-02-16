@@ -20,7 +20,6 @@ function Main() {
       const response = await axios.post('http://localhost:3000', credentials);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      // Redirect to culture page on successful login
       navigate('/all');
     } catch (error) {
       console.error('Login error:', error);
@@ -93,7 +92,6 @@ function Main() {
                         />
                         <button type='submit' className='header-button login-btn'>Log in</button>
                     </form>
-                    <button type='submit' className='header-button logout-btn'>Log out</button>
                 </div>
             </div>
         </div>
