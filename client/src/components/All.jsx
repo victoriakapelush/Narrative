@@ -19,7 +19,7 @@ function Home() {
           return;
         }
         const tokenWithoutBearer = token.replace('Bearer ', '');
-        const response = await axios.get('http://localhost:3000/all', {
+        const response = await axios.get('https://narrative-08nb.onrender.com/all', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -39,7 +39,7 @@ function Home() {
           <div className='flex-row post-wrapper'>
             {allPosts.map((post) => (
               <Link to={post._id} key={post._id} className='flex-row-center post-container'>
-                {post.image && <img src={`http://localhost:3000/${post.image}`} className="image square" alt="post"></img>}
+                {post.image && <img src={`https://narrative-08nb.onrender.com/${post.image}`} className="image square" alt="post"></img>}
                 <div className='flex-column post-brief-info square'>
                   <h2>{post.title}</h2>
                   <p className='post-description'>{post.description}</p>

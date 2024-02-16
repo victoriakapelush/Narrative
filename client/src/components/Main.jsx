@@ -17,7 +17,7 @@ function Main() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000', credentials);
+      const response = await axios.post('https://narrative-08nb.onrender.com', credentials);
       const { token } = response.data;
       localStorage.setItem('token', token);
       navigate('/all');

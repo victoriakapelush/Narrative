@@ -21,7 +21,7 @@ function Lifestyle() {
           return;
         }
         const tokenWithoutBearer = token.replace('Bearer ', '');
-        const response = await axios.get('http://localhost:3000/lifestyle', {
+        const response = await axios.get('https://narrative-08nb.onrender.com/lifestyle', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -45,7 +45,7 @@ function Lifestyle() {
         <div className='flex-row post-wrapper'>
           {lifestylePosts.map((post) => (
             <Link to={post._id} key={post._id} className='flex-row-center post-container'>
-              {post.image && <img src={`http://localhost:3000/`+`${post.image}`} className="image square"></img>}
+              {post.image && <img src={`https://narrative-08nb.onrender.com/`+`${post.image}`} className="image square"></img>}
               <div className='flex-column post-brief-info square'>
                 <h2>{post.title}</h2>
                 <p className='post-description'>{post.description}</p>

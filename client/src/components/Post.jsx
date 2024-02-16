@@ -34,7 +34,7 @@ function Post() {
           return;
         }
         const tokenWithoutBearer = token.replace('Bearer ', '');
-        const response = await axios.get('http://localhost:3000', {
+        const response = await axios.get('https://narrative-08nb.onrender.com', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -50,7 +50,7 @@ function Post() {
   // Display all content of the post
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await axios.get(`http://localhost:3000/all/${id}`)
+      const response = await axios.get(`https://narrative-08nb.onrender.com/all/${id}`)
       .then(response => {
         setPost(response.data);
       })
@@ -103,7 +103,7 @@ function Post() {
       if (!userId) {
         return;
       }
-      const response = await axios.post(`http://localhost:3000/all/${id}`, { 
+      const response = await axios.post(`https://narrative-08nb.onrender.com/all/${id}`, { 
         text: trimmedContent,
         user: user.username
       });
@@ -123,7 +123,7 @@ function Post() {
 
   const deleteComment = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:3000/all/${id}`, {
+      await axios.delete(`https://narrative-08nb.onrender.com/all/${id}`, {
         data: { content: commentId } 
       });
       setPost(prevPost => ({
@@ -150,7 +150,7 @@ function Post() {
               <p className='separate-date-tag'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
           </div>
-          {post.image && <img src={`http://localhost:3000/${post.image}`} className="post-image" alt={post.title} />}
+          {post.image && <img src={`https://narrative-08nb.onrender.com/${post.image}`} className="post-image" alt={post.title} />}
             <p className='separate-post-text'>{post.text}</p>
         </div>
         <h3>Comments:</h3>
