@@ -35,11 +35,11 @@ app.use(cors({
 
 // setup mongoose
 const store = new MongoDBStore({
-  uri: 'mongodb+srv://victoriakapelush:sakuraSun123@cluster0.qpt6ako.mongodb.net/blog?retryWrites=true&w=majority',
+  uri: mongoDB,
   collection: 'sessions'
 });
 mongoose.set('strictQuery', false);
-const mongoDB = "mongodb+srv://victoriakapelush:sakuraSun123@cluster0.qpt6ako.mongodb.net/blog?retryWrites=true&w=majority";
+const mongoDB = mongoDB;
 
 main().catch(err => console.log(err));
 async function main() {
