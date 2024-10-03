@@ -44,9 +44,13 @@ h1 {
     flex-wrap: wrap;
     margin: 2rem 1rem 1rem 2rem;
     gap: 2rem;
+    max-width: 100%;
+    height: auto;
 }
 
 .post-container {
+    min-width: 10rem;
+    height: auto;
     width: fit-content;
     margin-bottom: 1rem;
     transition: opacity .3s cubic-bezier(.165, .84, .44, 1),transform .3s cubic-bezier(.165, .84, .44, 1),-webkit-transform .3s cubic-bezier(.165, .84, .44, 1);
@@ -58,7 +62,7 @@ h1 {
 
 .image {
     width: 20rem;
-    height: 13rem;
+    height: auto;
     margin-right: 1rem;
 }
 

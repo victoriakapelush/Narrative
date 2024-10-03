@@ -8,6 +8,7 @@ import Header from './Header'
 import toast, { Toaster } from 'react-hot-toast';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; 
+import DOMPurify from 'dompurify';
 
 function CreatePost() {
   const notifySuccess = () => toast.success('Post created');
@@ -51,7 +52,9 @@ function CreatePost() {
 
     // Get the content from the editor
   const quill = editor.current;
-  const content = quill ? quill.root.innerHTML : '';
+  let content = quill ? quill.root.innerHTML : '';
+  // Sanitize the content to remove unnecessary/unsafe tags
+  content = DOMPurify.sanitize(content);
 
     try {
       const formDataToSend = new FormData();
@@ -112,7 +115,8 @@ function CreatePost() {
       <div>
       <Header />
       <h1 className='create-post-heading'>
-      Welcome, {user ? user.username : 'Guest'}      </h1>
+      Welcome, {user ? user.username : 'Guest'}      
+      </h1>
           <p>Here you can share your thoughts and ideas</p>
           <form className='flex-column-center create-form-container' method='post' onSubmit={handleSubmit} encType='multipart/form-data'>
             <input type="text" name="title" placeholder='add title' onChange={handleChange}></input>

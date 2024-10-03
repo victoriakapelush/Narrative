@@ -24,8 +24,8 @@ function Post() {
   const { category, id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const notifySuccess = () => toast.success('Comment added');
-  const notifyError = () => toast.error('Unable to add comment');
+  const notifySuccess = (message) => toast.success(message);
+  const notifyError = (message) => toast.error(message);
   const token = localStorage.getItem('token');
   const tokenWithoutBearer = token.replace('Bearer ', '');
 
@@ -44,6 +44,7 @@ function Post() {
           },
         });
         setUser(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error('Error fetching culture posts:', error);
       }
@@ -61,7 +62,6 @@ useEffect(() => {
         },
     });
       setPost(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching post:', error);
     }
@@ -128,7 +128,7 @@ useEffect(() => {
       );
   
       if (response.data && response.data.comment) {
-        const newComment = response.data.comment; // Extract the new comment object
+        const newComment = response.data.comment || []; // Extract the new comment object
   
         // Update the comments array in the state
         setComments((prevComments) => [...prevComments, newComment]);
@@ -138,11 +138,10 @@ useEffect(() => {
           ...prevPost,
           comments: [...prevPost.comments, newComment]
         }));
-        console.log(response.data)
   
         // Clear the quill editor after successful submission
         quill.setText('');
-        notifySuccess();
+        notifySuccess("Comment added.");
       } else {
         console.error('Invalid response format:', response.data);
         notifyError('Failed to add comment');
@@ -162,8 +161,7 @@ useEffect(() => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }); // Pass the commentId in the body of the request
-  console.log(response.data)
+        }); 
       // Update the post state to remove the deleted comment
       setPost(prevPost => ({
         ...prevPost,
@@ -171,7 +169,7 @@ useEffect(() => {
       }));
   
       // Optionally, notify success
-      notifySuccess('Comment deleted successfully');
+      notifySuccess('Comment deleted.');
     } catch (error) {
       console.error('Error deleting comment:', error);
       notifyError();
@@ -195,7 +193,7 @@ useEffect(() => {
             </div>
           </div>
           {post.image && <img src={`http://localhost:8000/${post.image}`} className="post-image"/>}
-            <p className='separate-post-text'>{post.text}</p>
+            <p className='separate-post-text'>{DOMPurify.sanitize(removeHTMLTags(post.text))}</p>
         </div>
         <h3>Comments:</h3>
             <div className='comments-container flex-column'>

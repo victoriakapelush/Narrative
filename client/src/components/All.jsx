@@ -10,6 +10,7 @@ function Home() {
   const navigate = useNavigate();
   const [allPosts, setAllPosts] = useState([]);
 
+  // Fetch all existing posts
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
@@ -39,12 +40,12 @@ function Home() {
           <div className='flex-row post-wrapper'>
             {allPosts.map((post) => (
               <Link to={post._id} key={post._id} className='flex-row-center post-container'>
-                {post.image && <img src={`http://localhost:8000/${post.image}`} className="image square" alt="post"></img>}
+                {post.image && <img src={`http://localhost:8000/${post.image}`} className="image square"></img>}
                 <div className='flex-column post-brief-info square'>
                   <h2>{post.title}</h2>
                   <p className='post-description'>{post.description}</p>
                   <div className='flex-row tag-date-container'>
-                    <p className='post-date flex-row-center'>{post.user || "Unknown Author"}</p>
+                    <p className='post-date flex-row-center'>{post?.user?.username || "Unknown Author"}</p>
                     <p className='post-date flex-row-center'>{post.tag}</p>
                     <p className='post-date flex-row-center'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
                   </div>

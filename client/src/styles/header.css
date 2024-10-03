@@ -4,6 +4,16 @@
     padding: 1.5rem 2rem;
     height: auto;
     color: #171c26;
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-link {
+    padding-right: 1rem;
 }
 
 .header-link:hover {
@@ -13,6 +23,7 @@
 .website-name {
     font-size: 1.5rem;
     letter-spacing: 1px;
+    padding-right: 1rem;
 }
 
 .header-button {
