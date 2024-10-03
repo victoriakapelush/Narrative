@@ -27,7 +27,9 @@ const signupPost = async (req, res) => {
       username: user.username
     };
 
-    jwt.sign(payload, 'cats', { expiresIn: 86400 }, (err, token) => {
+    console.log(payload)
+
+    jwt.sign(payload, 'cats', { expiresIn: '30d' }, (err, token) => {
       if (err || !token) {
         console.error(err);
         return res.status(500).json({ message: 'Error generating token' });
@@ -39,6 +41,5 @@ const signupPost = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = { signupGet, signupPost };

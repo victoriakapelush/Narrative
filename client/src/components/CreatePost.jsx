@@ -10,9 +10,12 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; 
 
 function CreatePost() {
-  const notifySuccess = () => toast.success('Successfully created post!');
+  const notifySuccess = () => toast.success('Post created');
   const notifyError = () => toast.error('Something went wrong... Please try again');
   const navigate = useNavigate();
+  const [user, setUser] = useState("");
+  const token = localStorage.getItem('token');
+  const tokenWithoutBearer = token.replace('Bearer ', '');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -22,17 +25,14 @@ function CreatePost() {
     user: ''
   });
   
-  const [user, setUser] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem('token');
         if (!token) {
           navigate('/');
           return;
         }
-        const tokenWithoutBearer = token.replace('Bearer ', '');
         const response = await axios.get('http://localhost:8000', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
@@ -44,25 +44,33 @@ function CreatePost() {
       }
     };
     fetchUser();
-  }, []);
+  }, [token, tokenWithoutBearer]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Get the content from the editor
+  const quill = editor.current;
+  const content = quill ? quill.root.innerHTML : '';
+
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('image', formData.image);
-      formDataToSend.append('text', formData.text);
-      formDataToSend.append('user', user.username);
+      formDataToSend.append('text', content);
+      formDataToSend.append('user', user);
       const selectedTag = document.getElementById('tags').value;
       formDataToSend.append('tag', selectedTag);
-      await axios.post('http://localhost:8000/addpost', formDataToSend, {
+      const response = await axios.post('http://localhost:8000/addpost', formDataToSend, {
         headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(response.data)
       notifySuccess();
+      navigate("/all")
     } catch (error) {
       console.error('Error creating post:', error);
       notifyError();
@@ -103,7 +111,8 @@ function CreatePost() {
     return (
       <div>
       <Header />
-          <h1 className='create-post-heading'>Welcome, {user.username}</h1>
+      <h1 className='create-post-heading'>
+      Welcome, {user ? user.username : 'Guest'}      </h1>
           <p>Here you can share your thoughts and ideas</p>
           <form className='flex-column-center create-form-container' method='post' onSubmit={handleSubmit} encType='multipart/form-data'>
             <input type="text" name="title" placeholder='add title' onChange={handleChange}></input>

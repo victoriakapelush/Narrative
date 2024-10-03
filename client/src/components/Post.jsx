@@ -20,20 +20,24 @@ function removeHTMLTags(textWithTags) {
 
 function Post() {
   const [post, setPost] = useState({ title: "", description: "", user: "", tag: "", time: "", text: "", comments: [] });
+  const [comments, setComments] = useState([]);
   const { category, id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const notifySuccess = () => toast.success('Comment added');
+  const notifyError = () => toast.error('Unable to add comment');
+  const token = localStorage.getItem('token');
+  const tokenWithoutBearer = token.replace('Bearer ', '');
 
-  // Get logged in users
+
+  // Get logged in user
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem('token');
         if (!token) {
           navigate('/');
           return;
         }
-        const tokenWithoutBearer = token.replace('Bearer ', '');
         const response = await axios.get('http://localhost:8000', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
@@ -45,21 +49,27 @@ function Post() {
       }
     };
     fetchUser();
-  }, [navigate]);
+  }, [navigate, tokenWithoutBearer, token]);
 
-  // Display all content of the post
-  useEffect(() => {
-    const fetchItems = async () => {
-      const response = await axios.get(`http://localhost:8000/api/posts/${category}/${id}`)
-      .then(response => {
-        setPost(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching post:', error);
-      });
-    };
-    fetchItems();
-  }, [category, id]);
+// Display all content of the post
+useEffect(() => {
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8000/api/posts/${category}/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+    });
+      setPost(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching post:', error);
+    }
+  };
+
+  fetchItems();
+}, [category, id, token]);
+
 
   // Display editor
   const isMounted = useRef(false);
@@ -83,11 +93,7 @@ function Post() {
     }
   }, []);
 
-  const notifySuccess = () => toast.success('Comment successfully created!');
-  const notifyError = () => toast.error('Something went wrong... Please try again');
-
-
-  // Display comments under posts
+  // Add comments to post
   const handleSubmitComment = useCallback(async (e) => {
     e.preventDefault();
     try {
@@ -98,43 +104,81 @@ function Post() {
       if (!trimmedContent) {
         return;
       }
-      console.log('HTML content:', trimmedContent);
-      const userId = localStorage.getItem('token');
-      if (!userId) {
+  
+      const token = localStorage.getItem('token');
+  
+      // Make sure to check if you have a valid token
+      if (!token) {
+        console.error('No token found');
+        notifyError('No token found');
         return;
       }
-      const response = await axios.post(`http://localhost:8000/api/comments/${id}`, { 
-        text: trimmedContent,
-        user: user.username
-      });
-      
-      setPost(prevPost => ({
-        ...prevPost,
-        comments: [...prevPost.comments, response.data._id]
-      }));
-      console.log('Updated post after adding comment:', post);
-      notifySuccess();
-      quill.setText('');
+  
+      const response = await axios.post(
+        `http://localhost:8000/api/comments/${id}`, 
+        { 
+          text: trimmedContent, 
+          user: user._id 
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        }
+      );
+  
+      if (response.data && response.data.comment) {
+        const newComment = response.data.comment; // Extract the new comment object
+  
+        // Update the comments array in the state
+        setComments((prevComments) => [...prevComments, newComment]);
+  
+        // Update the specific post's comments in the post list
+        setPost(prevPost => ({
+          ...prevPost,
+          comments: [...prevPost.comments, newComment]
+        }));
+        console.log(response.data)
+  
+        // Clear the quill editor after successful submission
+        quill.setText('');
+        notifySuccess();
+      } else {
+        console.error('Invalid response format:', response.data);
+        notifyError('Failed to add comment');
+      }
+  
     } catch (error) {
       console.error('Error creating comment:', error);
       notifyError();
     }
-  }, [id, user, post]);
+  }, [id, user]);
+  
 
   const deleteComment = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/comments/${id}`, {
-        data: { content: commentId } 
-      });
+      const response = await axios.delete(`http://localhost:8000/api/comments/${id}`, {
+        data: { commentId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }); // Pass the commentId in the body of the request
+  console.log(response.data)
+      // Update the post state to remove the deleted comment
       setPost(prevPost => ({
         ...prevPost,
-        comments: prevPost.comments.filter(comment => comment !== commentId)
+        comments: prevPost.comments.filter(comment => comment._id !== commentId) // Compare with the _id of each comment
       }));
+  
+      // Optionally, notify success
+      notifySuccess('Comment deleted successfully');
     } catch (error) {
       console.error('Error deleting comment:', error);
       notifyError();
     }
   };
+  
+  
   
   return (
     <div>
@@ -145,30 +189,26 @@ function Post() {
             <h2 className='separate-post-title'>{post.title}</h2>
             <p className='separate-post-description'>{post.description}</p>
             <div className='flex-row separate-tag-container'>
-              <p className='separate-post-tag'>by {post.user || "Unknown Author"}</p>
+              <p className='separate-post-tag'>by {post?.user?.username || "Unknown Author"}</p>
               <p className='separate-post-tag'>{post.tag}</p>
               <p className='separate-date-tag'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
           </div>
-          {post.image && <img src={`http://localhost:8000/${post.image}`} className="post-image" alt={post.title} />}
+          {post.image && <img src={`http://localhost:8000/${post.image}`} className="post-image"/>}
             <p className='separate-post-text'>{post.text}</p>
         </div>
         <h3>Comments:</h3>
             <div className='comments-container flex-column'>
-            {post.comments && post.comments.map((comment, index) => (
-              <React.Fragment key={index}>
-                {index % 2 === 0 && index + 1 < post.comments.length && (
-                  <div className='comment' key={`user-${index}`}>
-                    <p className='text-comment'>{DOMPurify.sanitize(removeHTMLTags(post.comments[index]))}</p>
-                    <p className='user-comment'>Posted by user &quot;{post.comments[index + 1]}&quot;</p>
-                    <div className='comments-buttons flex-row-center'>
-                      <button className='header-button' onClick={() => deleteComment(post.comments[index])}>Delete</button>
-                    </div>
-                  </div>
-                )}
-              </React.Fragment>
-          ))}
-      {post.comments && post.comments.length === 0 && <div>No comments yet.</div>}
+            {post && post?.comments?.map((comment, index) => (
+              <div className='comment' key={comment._id}>
+                <p className='text-comment'>{DOMPurify.sanitize(removeHTMLTags(comment.text))}</p>
+                <p className='user-comment'>Posted by user &quot;{comment?.user?.username}&quot;</p>
+                <div className='comments-buttons flex-row-center'>
+                  <button className='header-button' onClick={() => deleteComment(comment._id)}>Delete</button>
+                </div>
+              </div>
+            ))}
+      {post?.comments && post?.comments?.length === 0 && <div>No comments yet.</div>}
     </div>
       </div>
       <div className="flex-column">
