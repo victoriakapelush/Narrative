@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import Signup from './components/signup.jsx'
 import All from './components/All.jsx'
-import Culture from './components/Culture.jsx'
-import People from './components/People.jsx'
+import Category from './components/Category.jsx'
 import Post from './components/Post.jsx'
 import CreatePost from './components/CreatePost.jsx'
-import Lifestyle from './components/Lifestyle.jsx'
-import Technology from './components/Technology.jsx'
+import NotFound from './components/NotFound.jsx'
 import './styles/index.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -30,45 +28,21 @@ const router = createBrowserRouter([
     element: <Post />,
   },
   {
-    path: '/culture',
-    element: <Culture />
+    path: '/:category',
+    element: <Category />
   },
   {
-    path: 'culture/:id',
-    element: <Post />
-  },
-  {
-    path: '/technology',
-    element: <Technology />
-  },
-  {
-    path: 'technology/:id',
-    element: <Post />
-  },
-  {
-    path: '/people',
-    element: <People />
-  },
-  {
-    path: 'people/:id',
-    element: <Post />
-  },
-  {
-    path: '/lifestyle',
-    element: <Lifestyle />
-  },
-  {
-    path: 'lifestyle/:id',
-    element: <Post />
-  },
-  {
-    path: '/:id',
+    path: '/:category/:id',
     element: <Post />
   },
   {
     path: '/addpost',
     element: <CreatePost />
-  }
+  },
+  {
+    path: '*',
+    element: <NotFound />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

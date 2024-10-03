@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 console.log(
     'This script populates posts to the database.'
   );
@@ -12,7 +14,7 @@ console.log(
   const mongoose = require("mongoose");
   mongoose.set("strictQuery", false);
   
-  const mongoDB = userArgs[0];
+  const mongoDB = process.env.mongoDB;
   
   main().catch((err) => console.log(err));
   

@@ -8,7 +8,7 @@ function Header() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get('https://narrative-08nb.onrender.com');
+      const response = await axios.get('http://localhost:8000');
       const { token } = response.data;
       localStorage.removeItem('token', token);
       navigate('/');

@@ -10,7 +10,7 @@ const CommentSchema = new Schema({
     default: () => DateTime.local().toLocaleString(
       { month: 'long', day: '2-digit', year: 'numeric' }),
   },
-  user: { type: String },
+  user: { type: String }
 });
 
 module.exports = mongoose.model("Comment", CommentSchema);

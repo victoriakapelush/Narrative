@@ -1,6 +1,6 @@
-const express = require('express');
 const Post = require('../models/Post')
 
+// Add a post
 const addPost = async (req, res) => {
   const { title, text, description, user, tag } = req.body;
   try {

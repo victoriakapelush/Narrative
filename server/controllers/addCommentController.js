@@ -1,10 +1,12 @@
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 
+// Fetch all comments by user
 const getAllComments = async (req, res) => {
   try {
     const comments = await Comment.find().populate('user');
-    const posts = await Post.find().populate('comments').sort({ createdAt: -1 });
+    // Fetch a post with all related comments sorted in descending order
+    const posts = await Post.find().populate('comments').sort({ time: -1 });
     return res.status(200).json(posts.map(post => ({
       ...post.toObject(),
       comments: post.comments,
@@ -16,8 +18,10 @@ const getAllComments = async (req, res) => {
   }
 };
 
+// Add a comment to a certain post
 const addComment = async (req, res) => {
   const { text, user } = req.body;
+  console.log(req.user)
   const post = await Post.findById(req.params.id);
   try {
     const newComment = new Comment({
@@ -33,7 +37,10 @@ const addComment = async (req, res) => {
   }
 };
 
+// Delete a comment under a certain post
 const deleteComment = async (req, res) => {
+  console.log(req.user)
+
   try {
     const { content } = req.body;
     const post = await Post.findById(req.params.id);

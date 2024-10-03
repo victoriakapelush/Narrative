@@ -28,7 +28,7 @@ function Signup() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://narrative-08nb.onrender.com/signup",
+        "http://localhost:8000/signup",
         {
           ...inputValue,
         },

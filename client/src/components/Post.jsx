@@ -20,7 +20,7 @@ function removeHTMLTags(textWithTags) {
 
 function Post() {
   const [post, setPost] = useState({ title: "", description: "", user: "", tag: "", time: "", text: "", comments: [] });
-  const { id } = useParams();
+  const { category, id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
@@ -34,7 +34,7 @@ function Post() {
           return;
         }
         const tokenWithoutBearer = token.replace('Bearer ', '');
-        const response = await axios.get('https://narrative-08nb.onrender.com', {
+        const response = await axios.get('http://localhost:8000', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -45,12 +45,12 @@ function Post() {
       }
     };
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   // Display all content of the post
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await axios.get(`https://narrative-08nb.onrender.com/all/${id}`)
+      const response = await axios.get(`http://localhost:8000/api/posts/${category}/${id}`)
       .then(response => {
         setPost(response.data);
       })
@@ -59,7 +59,7 @@ function Post() {
       });
     };
     fetchItems();
-  });
+  }, [category, id]);
 
   // Display editor
   const isMounted = useRef(false);
@@ -103,7 +103,7 @@ function Post() {
       if (!userId) {
         return;
       }
-      const response = await axios.post(`https://narrative-08nb.onrender.com/all/${id}`, { 
+      const response = await axios.post(`http://localhost:8000/api/comments/${id}`, { 
         text: trimmedContent,
         user: user.username
       });
@@ -119,11 +119,11 @@ function Post() {
       console.error('Error creating comment:', error);
       notifyError();
     }
-  }, [id, post, user]);
+  }, [id, user, post]);
 
   const deleteComment = async (commentId) => {
     try {
-      await axios.delete(`https://narrative-08nb.onrender.com/all/${id}`, {
+      await axios.delete(`http://localhost:8000/api/comments/${id}`, {
         data: { content: commentId } 
       });
       setPost(prevPost => ({
@@ -150,7 +150,7 @@ function Post() {
               <p className='separate-date-tag'>{DateTime.fromISO(post.time).toLocaleString({ month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
           </div>
-          {post.image && <img src={`https://narrative-08nb.onrender.com/${post.image}`} className="post-image" alt={post.title} />}
+          {post.image && <img src={`http://localhost:8000/${post.image}`} className="post-image" alt={post.title} />}
             <p className='separate-post-text'>{post.text}</p>
         </div>
         <h3>Comments:</h3>

@@ -33,7 +33,7 @@ function CreatePost() {
           return;
         }
         const tokenWithoutBearer = token.replace('Bearer ', '');
-        const response = await axios.get('https://narrative-08nb.onrender.com', {
+        const response = await axios.get('http://localhost:8000', {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -57,7 +57,7 @@ function CreatePost() {
       formDataToSend.append('user', user.username);
       const selectedTag = document.getElementById('tags').value;
       formDataToSend.append('tag', selectedTag);
-      await axios.post('https://narrative-08nb.onrender.com/addpost', formDataToSend, {
+      await axios.post('http://localhost:8000/addpost', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

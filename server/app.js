@@ -13,23 +13,20 @@ const logger = require('morgan');
 const cors = require('cors');
 
 require('./config-passport');
+require('dotenv').config();
 
 // Import routes
-const allRouter = require('./routes/all');
-const cultureRouter = require('./routes/culture');
-const techRouter = require('./routes/technology');
-const peopleRouter = require('./routes/people');
-const lifestyleRouter = require('./routes/lifestyle');
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const addPostRouter = require('./routes/post');
 const addCommentRouter = require('./routes/addComment');
+const tagRouter = require('./routes/all');
 
 const app = express();
 
 app.use(cors({
-  origin: 'https://narrative-blog.onrender.com', 
+  origin: ['http://localhost:5173', 'https://narrative-blog.onrender.com'],
   credentials: true
 }));
 
@@ -77,20 +74,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
 app.use('/', loginRouter);
-app.use('/all', allRouter);
-app.use('/all/:id', allRouter);
-app.use('/all', addCommentRouter);
-app.use('/culture', cultureRouter);
-app.use('/culture/:id', cultureRouter);
-app.use('/technology', techRouter);
-app.use('/technology/:id', techRouter);
-app.use('/people', peopleRouter);
-app.use('/people/:id', peopleRouter);
-app.use('/lifestyle', lifestyleRouter);
-app.use('/lifestyle/:id', lifestyleRouter);
 app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
 app.use('/addpost', addPostRouter)
+app.use('/api/comments', addCommentRouter);
+app.use('/api/posts', tagRouter);
 
 // 404 error handler
 app.use(function(req, res, next) {
@@ -104,7 +92,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
