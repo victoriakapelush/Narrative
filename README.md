@@ -1,7 +1,7 @@
 # Narrative - MERN Stack Blog API
 ## Overview 📝
 
-[Narrative](https://narrative-blog.onrender.com) is a powerful MERN (MongoDB, Express.js, React.js, Node.js) stack blog API that empowers users to create and read blog posts as well as read, create and delete blog comments. With user authentication and comment functionality, Narrative provides a seamless and interactive platform for sharing and engaging with content.
+[Narrative](https://narrative-blog.onrender.com) is a MERN (MongoDB, Express.js, React.js, Node.js) stack blog that empowers users to create and read blog posts as well as read, create and delete blog comments. With user authentication and comment functionality, Narrative provides a seamless and interactive platform for sharing and engaging with content.
 
 ## Features 🚀
 
