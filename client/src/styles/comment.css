@@ -2,11 +2,12 @@
     border: 1px solid rgb(208, 206, 206);
     padding: 1.1rem 4rem;
     height: auto;
-    margin: 0 11rem;
+    margin: 0 auto;
 }
 
 .comments-container {
     gap: 1rem;
+    width: fit-content;
 }
 
 .text-comment {
@@ -23,4 +24,13 @@
 
 .comments-buttons {
     margin: 1rem auto;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.padding {
+    padding-bottom: 1rem;
 }

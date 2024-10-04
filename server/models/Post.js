@@ -14,11 +14,11 @@ const PostSchema = new Schema({
     default: Date.now,
   },
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }]
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 // Formatting the time when retrieving the document
-PostSchema.methods.getFormattedTime = function() {
+PostSchema.methods.getFormattedTime = function () {
   return DateTime.fromJSDate(this.time).toLocaleString(DateTime.DATE_MED);
 };
 

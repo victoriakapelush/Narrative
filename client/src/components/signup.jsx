@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
-import '../styles/signup.css'
-import Header from './Header';
+import "../styles/signup.css";
+import Header from "./Header";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 function Signup() {
-  const notifySuccess = () => toast.success('Successfully registered!');
-  const notifyError = () => toast.error('Something went wrong... Please try again');
+  const notifySuccess = () => toast.success("Successfully registered!");
+  const notifyError = () =>
+    toast.error("Something went wrong... Please try again");
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     password: "",
@@ -24,6 +25,7 @@ function Signup() {
     });
   };
 
+  // Function to signup
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -32,18 +34,18 @@ function Signup() {
         {
           ...inputValue,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
-      const { success, message, token } = data;
+      const { success, token } = data;
       console.log("Token received:", token);
       if (success) {
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
         notifySuccess();
         setTimeout(() => {
           navigate("/all");
         }, 1000);
       } else {
-        notifyError(); 
+        notifyError();
       }
     } catch (error) {
       console.log(error);
@@ -58,20 +60,43 @@ function Signup() {
 
   return (
     <div>
-        <Header />
-        <div className='home-login flex-column-center'>
-            <h1>Sign up to create posts,<br/> and leave comments on Narrative</h1>
-            <div>
-                <form className='login-form flex-column-center' onSubmit={handleSubmit} method="post">
-                    <input type="text" placeholder='username' className='login-input' name='username' value={username} onChange={handleOnChange}></input>
-                    <input type="password" placeholder='password' className='login-input' name="password" value={password} onChange={handleOnChange}></input>
-                    <button type='submit' className='header-button login-btn'>Sign up</button>
-                    <Toaster />
-                </form>
-            </div>
+      <Header />
+      <div className="home-login flex-column-center">
+        <h1>
+          Sign up to create posts,
+          <br /> and leave comments on Narrative
+        </h1>
+        <div>
+          <form
+            className="login-form flex-column-center"
+            onSubmit={handleSubmit}
+            method="post"
+          >
+            <input
+              type="text"
+              placeholder="username"
+              className="login-input"
+              name="username"
+              value={username}
+              onChange={handleOnChange}
+            ></input>
+            <input
+              type="password"
+              placeholder="password"
+              className="login-input"
+              name="password"
+              value={password}
+              onChange={handleOnChange}
+            ></input>
+            <button type="submit" className="header-button login-btn">
+              Sign up
+            </button>
+            <Toaster />
+          </form>
         </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
