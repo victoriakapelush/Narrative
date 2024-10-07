@@ -37,7 +37,6 @@ function Signup() {
         { withCredentials: true },
       );
       const { success, token } = data;
-      console.log("Token received:", token);
       if (success) {
         localStorage.setItem("token", token);
         notifySuccess();
