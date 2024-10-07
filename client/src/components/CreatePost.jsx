@@ -77,7 +77,6 @@ function CreatePost() {
           },
         },
       );
-      console.log(response.data);
       notifySuccess();
       navigate("/all");
     } catch (error) {
@@ -121,7 +120,7 @@ function CreatePost() {
     <div>
       <Header />
       <h1 className="create-post-heading">
-        Welcome, {user ? user.username : "Guest"}
+        Welcome, {user ? user.username : "Stranger"}
       </h1>
       <p>Here you can share your thoughts and ideas</p>
       <form
