@@ -46,7 +46,7 @@ function Home() {
             >
               {post.image && (
                 <img
-                  src={`http://localhost:8000/${post.image}`}
+                  src={`https://narrative-08nb.onrender.com/${post.image}`}
                   className="image square"
                 ></img>
               )}
