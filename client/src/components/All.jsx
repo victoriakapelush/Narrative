@@ -20,7 +20,7 @@ function Home() {
           return;
         }
         const tokenWithoutBearer = token.replace("Bearer ", "");
-        const response = await axios.get("http://localhost:8000/api/posts", {
+        const response = await axios.get("https://narrative-08nb.onrender.com/api/posts", {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
