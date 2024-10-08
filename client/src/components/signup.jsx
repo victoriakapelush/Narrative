@@ -30,14 +30,13 @@ function Signup() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:8000/signup",
+        "https://narrative-08nb.onrender.com/signup",
         {
           ...inputValue,
         },
         { withCredentials: true },
       );
       const { success, token } = data;
-      console.log("Token received:", token);
       if (success) {
         localStorage.setItem("token", token);
         notifySuccess();

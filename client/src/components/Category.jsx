@@ -54,7 +54,7 @@ function Category() {
         }
         const tokenWithoutBearer = token.replace("Bearer ", "");
         const response = await axios.get(
-          `http://localhost:8000/api/posts/${category}`,
+          `https://narrative-08nb.onrender.com/api/posts/${category}`,
           {
             headers: {
               Authorization: `Bearer ${tokenWithoutBearer}`,
@@ -88,7 +88,7 @@ function Category() {
             >
               {post.image && (
                 <img
-                  src={`http://localhost:8000/` + `${post.image}`}
+                  src={`https://narrative-08nb.onrender.com/` + `${post.image}`}
                   className="image square"
                 ></img>
               )}

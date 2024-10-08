@@ -45,7 +45,7 @@ function Post() {
           navigate("/");
           return;
         }
-        const response = await axios.get("http://localhost:8000", {
+        const response = await axios.get("https://narrative-08nb.onrender.com", {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -64,7 +64,7 @@ function Post() {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/posts/${category}/${id}`,
+          `https://narrative-08nb.onrender.com/api/posts/${category}/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ function Post() {
         }
 
         const response = await axios.post(
-          `http://localhost:8000/api/comments/${id}`,
+          `https://narrative-08nb.onrender.com/api/comments/${id}`,
           {
             text: trimmedContent,
             user: user._id,
@@ -137,7 +137,7 @@ function Post() {
         );
 
         if (response.data && response.data.comment) {
-          const newComment = response.data.comment || []; // Extract the new comment object
+          const newComment = response.data.comment || {}; // Extract the new comment object
 
           // Update the comments array in the state
           setComments((prevComments) => [...prevComments, newComment]);
@@ -166,7 +166,7 @@ function Post() {
   const deleteComment = async (commentId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/comments/${id}`,
+        `https://narrative-08nb.onrender.com/api/comments/${id}`,
         {
           data: { commentId },
           headers: {
@@ -213,7 +213,7 @@ function Post() {
           </div>
           {post.image && (
             <img
-              src={`http://localhost:8000/${post.image}`}
+              src={`https://narrative-08nb.onrender.com/${post.image}`}
               className="post-image"
             />
           )}

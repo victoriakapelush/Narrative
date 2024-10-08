@@ -35,7 +35,7 @@ function CreatePost() {
           navigate("/");
           return;
         }
-        const response = await axios.get("http://localhost:8000", {
+        const response = await axios.get("https://narrative-08nb.onrender.com", {
           headers: {
             Authorization: `Bearer ${tokenWithoutBearer}`,
           },
@@ -68,7 +68,7 @@ function CreatePost() {
       const selectedTag = document.getElementById("tags").value;
       formDataToSend.append("tag", selectedTag);
       const response = await axios.post(
-        "http://localhost:8000/addpost",
+        "https://narrative-08nb.onrender.com/addpost",
         formDataToSend,
         {
           headers: {
@@ -77,7 +77,6 @@ function CreatePost() {
           },
         },
       );
-      console.log(response.data);
       notifySuccess();
       navigate("/all");
     } catch (error) {
@@ -121,7 +120,7 @@ function CreatePost() {
     <div>
       <Header />
       <h1 className="create-post-heading">
-        Welcome, {user ? user.username : "Guest"}
+        Welcome, {user ? user.username : "Stranger"}
       </h1>
       <p>Here you can share your thoughts and ideas</p>
       <form
